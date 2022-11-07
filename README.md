@@ -19,6 +19,12 @@ test Docker
 ```bash
 docker run debian sleep 5
 ```
+```bash
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+rm kubectl
+```
+
 
 dowload KIND from https://github.com/kubernetes-sigs/kind/releases/
 
