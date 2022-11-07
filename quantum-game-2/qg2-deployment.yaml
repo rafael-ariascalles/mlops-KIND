@@ -18,5 +18,5 @@ spec:
       - name: quantum-game-2
         image: spkane/quantum-game-2:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 8000
 

@@ -1,15 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: quantum-game-2
-  labels:
-    name: quantum-game-2
+  name: quantum-game-2-service
 spec:
   type: NodePort
   ports:
-    - port: 8080
-      nodePort: 30080
-      targetPort: 8080
-      name: http
+    - targetPort: 8080 #port on the pod 8000
+      port: 80 #the service in the node
+      nodePort: 30100 #port in the node     
   selector:
-    name: quantum-game-2
+    app: quantum-game-2
