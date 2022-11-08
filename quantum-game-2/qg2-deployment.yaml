@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         app: quantum-game-2
+        workerdock: quantum-game-2
     spec:
       containers:
       - name: quantum-game-2

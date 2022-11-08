@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: quantum-game-2
+  labels:
+    app: quantum-game-2
+    revision: beta
+spec:
+  containers:
+  - name: quantum-game-2
+    image: spkane/quantum-game-2:latest
+    ports:
+    - containerPort: 8000
