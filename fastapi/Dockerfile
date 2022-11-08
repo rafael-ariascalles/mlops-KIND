@@ -1,6 +1,7 @@
 FROM python:3.10
 WORKDIR /server
 COPY ./requirements.txt /server/requirements.txt
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir --upgrade -r /server/requirements.txt
 COPY ./app /server/app
 # Given that wordir has setup to server it will be inside /server/
