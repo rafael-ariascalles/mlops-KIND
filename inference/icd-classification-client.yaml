@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: classification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: classification-pod
+  template:
+    metadata:
+      labels:
+        app: classification-pod
+    spec:
+      containers:
+        - name: classification-container
+          image: rjacdevops/icd_classification_client:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: NVIDIA_TRITON_ENDPOINT
+              value: "http://triton-endpoint:8000"
+          resources:
+            requests:
+              memory: "0.25Gi"
+              cpu: "0.25"
+            limits:
+              memory: "1Gi"
+              cpu: "2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: classification-endpoint
+spec:
+  selector:
+    app: classification-pod
+  ports:
+    - port: 8081
+      targetPort: 8081
+      

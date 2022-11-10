@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ner-pod
+  template:
+    metadata:
+      labels:
+        app: ner-pod
+    spec:
+      containers:
+        - name: ner-container
+          image: rjacdevops/disease_ner_client:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: NVIDIA_TRITON_ENDPOINT
+              value: "http://triton-endpoint:8000"
+          resources:
+            requests:
+              memory: "0.25Gi"
+              cpu: "0.25"
+            limits:
+              memory: "1Gi"
+              cpu: "2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ner-endpoint
+spec:
+  selector:
+    app: ner-pod
+  ports:
+    - port: 8081
+      targetPort: 8081
+      
