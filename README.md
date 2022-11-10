@@ -77,6 +77,16 @@ kind create cluster --name class --config=ingress.yaml
 ```
 
 
+```bash
+kind create cluster --config=cluster/ingress/cluster.yaml
+kubectl apply -f cluster/ingress/ingress.yaml
+kubectl apply -f applications/webserver/api-service-pod.yaml
+kubectl apply -f applications/webserver/ingress-route.yaml
+```
+in unix like distribution if we want to format secrets to be use in K8s
+```bash
+echo -n "admin" | base64
+```
 
 
 

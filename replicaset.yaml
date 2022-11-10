@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: api-replicaset
+spec:
+  replicas: 6
+  template:
+    metadata:
+      labels:
+        app: endpoint
+    spec:
+      containers:
+        - name: api-pod-worker
+          image: rjacdevops/api-service-test:latest
+          ports:
+            - containerPort: 8081
+  selector:
+    matchLabels:
+      app: endpoint
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-endpoint-service
+spec:
+  selector:
+    app: endpoint
+  ports:
+    - port: 8081
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-route
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: api-endpoint-service
+            port:
+              number: 8081

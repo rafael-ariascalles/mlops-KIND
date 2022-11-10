@@ -55,7 +55,7 @@ metadata:
 spec:
   containers:
   - name: quantum-game-2
-    image: spkane/quantum-game-2:latest
+    image: rjacdevops/api-service-test:latest
     ports:
         - containerPort: 8080
 ---
@@ -76,7 +76,6 @@ metadata:
   name: example-ingress
 spec:
   rules:
-  - 
   - http:
       paths:
       - pathType: Prefix

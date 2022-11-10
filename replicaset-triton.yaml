@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-replicaset
+spec:
+  replicas: 1
+  
+  template:
+    metadata:
+      labels:
+        app: triton-server
+    spec:
+      containers:
+        - name: triton
+          image: nvcr.io/nvidia/tritonserver:22.10-py3
+          ports:
+            - containerPort: 8000
+              name: http-triton
+            - containerPort: 8001
+              name: grpc-triton
+            - containerPort: 8002
+              name: metrics-triton
+          args: ['tritonserver', '--model-repository=s3://nlp-medical-biller-group-datasets-mlo4/models']
+          env:
+          - name: AWS_DEFAULT_REGION
+            valueFrom:
+              secretKeyRef:
+                name: aws-credentials
+                key: AWS_DEFAULT_REGION
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: aws-credentials
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: aws-credentials
+                key: AWS_SECRET_ACCESS_KEY
+  selector:
+    matchLabels:
+      app: triton-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-endpoint-service
+spec:
+  selector:
+    app: triton-server
+  ports:
+    - port: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-route
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: api-endpoint-service
+            port:
+              number: 8000

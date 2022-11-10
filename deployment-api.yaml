@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:  
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: api-worker
+    spec:
+      containers:
+      - name: api-container
+        image: rjacdevops/api
+        ports:
+        - containerPort: 8081
+        env:
+        - name: AWS_DEFAULT_REGION
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: AWS_DEFAULT_REGION
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: AWS_SECRET_ACCESS_KEY
+  selector:
+    matchLabels:
+      app: api-worker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-service
+spec:
+  selector:
+    app: api-worker
+  ports:
+    - port: 8081
+      targetPort: 8081
+  
