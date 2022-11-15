@@ -2,8 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: client
+  namespace: inference
 spec:
-  replicas: 1
+  replicas: 6
   selector:
     matchLabels:
       app: client-pod
@@ -18,9 +19,9 @@ spec:
           ports:
             - containerPort: 8000
           env:
-            - name: ICD_ENDPOINT
+            - name: ICD_SERVICE
               value: "http://classification-endpoint:8081"
-            - name: NER_ENDPOINT
+            - name: NER_SERVICE
               value: "http://ner-endpoint:8081"
           resources:
             requests:
@@ -34,6 +35,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: client-endpoint
+  namespace: inference
 spec:
   selector:
     app: client-pod
