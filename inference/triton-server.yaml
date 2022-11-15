@@ -6,11 +6,11 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: triton-pod
+      app: triton
   template:
     metadata:
       labels:
-        app: triton-pod
+        app: triton
     spec:
       containers:
         - name: triton-container
@@ -57,7 +57,7 @@ metadata:
     app: triton-endpoint
 spec:
   selector:
-    app: triton-pod
+    app: triton
   ports:
     - port: 8000
       name: http-triton

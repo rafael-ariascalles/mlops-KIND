@@ -1,11 +1,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
-  name: prometheus
-  labels:
-    app: prometheus-pod
+  name: prometheus-deployment
 spec:
   image: quay.io/prometheus/prometheus:v2.22.1
+  podMetadata:
+    labels:
+      app: prometheus
   nodeSelector:
     kubernetes.io/os: linux
   replicas: 2

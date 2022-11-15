@@ -6,7 +6,7 @@ metadata:
     app: prometheus-endpoint
 spec:
   selector:
-    prometheus: prometheus
+     app: prometheus
   ports:
   - port: 9090
     targetPort: web

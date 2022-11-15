@@ -170,3 +170,9 @@ kubectl apply -f operator_k8s/prometheus.yaml
 kubectl apply -f operator_k8s/prometheus_service.yaml
 kubectl apply -f operator_k8s/prometheus_servicemonitor.yaml
 ```
+
+### Grafana ###
+
+```bash
+kubectl apply -f grafana/grafana-deployment.yaml 
+```
