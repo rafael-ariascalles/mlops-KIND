@@ -1,0 +1,8 @@
+- job_name: 'triton-promjob'
+  scrape_interval: 30s
+  metrics_path: /metrics
+  scheme: http
+  static_configs:
+    - targets: ['triton-endpoint:8002']
+  kubernetes_sd_configs:
+  - role: endpoints

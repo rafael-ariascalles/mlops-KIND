@@ -121,3 +121,52 @@ export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 ```
+
+
+
+kubectl create -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/master/bundle.yaml
+
+
+### Create Namespace ###
+
+```bash
+kubectl create namespace inference
+kubectl config set-context --current --namespace=inference
+```
+
+### Create secrets to be use in the cluster ###
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name:  aws-credentials
+type: Opaque
+data:
+  AWS_DEFAULT_REGION: <echo -n AWS_DEFAULT_REGION | base64>
+  AWS_ACCESS_KEY_ID: <echo -n AWS_ACCESS_KEY_ID | base64>
+  AWS_SECRET_ACCESS_KEY: <echo -n AWS_SECRET_ACCESS_KEY | base64>
+```
+
+```bash
+kubectl create -f inference/secrets-inference-deployment.yaml 
+kubectl apply -f inference/triton-server.yaml
+kubectl get deployments
+kubectl get svc
+```
+
+```bash
+kubectl apply -f inference/diseases-ner-client.yaml
+kubectl apply -f inference/icd-classification-client.yaml
+```
+
+### Prometheus ###
+
+```bash
+kubectl config set-context --current --namespace=default
+kubectl create -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/master/bundle.yaml
+kubectl apply -f operator_k8s/prometheus_rbac.yaml
+kubectl apply -f operator_k8s/prometheus.yaml
+kubectl apply -f operator_k8s/prometheus_service.yaml
+kubectl apply -f operator_k8s/prometheus_servicemonitor.yaml
+```
